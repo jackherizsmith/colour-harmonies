@@ -7,44 +7,48 @@
     <title>Colours</title>
   </head>
   <body>
+    <div class="hue-gradient">
+      <p class="hsl-text hsl-text--hue">Hue <span id="hue">0</span></p>
+    </div>
+    <div class="light-gradient">
+      <p class="hsl-text hsl-text--light">
+        Lightness <span id="light">0%</span>
+      </p>
+    </div>
     <div class="container">
-      <div class="block" id="left">
-        <p class="page-text">Hue (of mouse)<span id="hue">0</span></p>
-        <label for="analogous"
-          ><span>[ 1 ]</span>Analogous
-          <input type="radio" name="harmony" value="analogous" id="analogous"
-        /></label>
-      </div>
-      <div class="block" id="centre">
-        <p class="page-text">
-          &uarr; Saturation &darr;<span id="sat">60%</span>
-        </p>
-        <label for="triad"
-          ><span>[ 2 ]</span>Triad
-          <input type="radio" name="harmony" value="triad" id="triad" checked
-        /></label>
-      </div>
-      <div class="block" id="right">
-        <p class="page-text">Lightness<span id="light">0%</span></p>
-        <label for="split"
-          ><span>[ 3 ]</span>Split-complementary
-          <input type="radio" name="harmony" value="split" id="split"
-        /></label>
-      </div>
+      <div class="back colour--a" id="left"></div>
+      <div class="box-1 colour--b" id="centre"></div>
+      <div class="box-2 colour--c" id="right"></div>
+    </div>
+    <div class="controls">
+      <label for="analogous"
+        ><input
+          type="radio"
+          name="harmony"
+          value="analogous"
+          id="analogous"
+        /><span>Analogous
+      </label>
+      <label for="triad"
+        ><input
+          type="radio"
+          name="harmony"
+          value="triad"
+          id="triad"
+          checked
+        />Triad
+      </label>
+      <label for="split">
+        <input type="radio" name="harmony" value="split" id="split" />Split-complementary
+      </label>
+      <p>
+        Use <span class="keys">&uarr;</span> &
+        <span class="keys">&darr;</span> on the keyboard to change saturation:
+        <span id="sat">60%</span>
+      </p>
+      <p>Press enter to copy CSS variable to your clipboard</p>
     </div>
     <div class="copied">Copied!</div>
-    <div class="rules">Rules</div>
-    <article>
-      <p><strong>Every colour is on this page.</strong></p>
-      <p>
-        You can find the complementary accents and dominants wherever your mouse
-        goes.
-      </p>
-      <p>Up / down keys to change saturation</p>
-      <p>1, 2 and 3 keys to select the harmony</p>
-
-      <p>Press enter to copy CSS variables to the clipboard.</p>
-    </article>
   </body>
   <script src="index.js"></script>
 </html>

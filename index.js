@@ -18,17 +18,16 @@ const harmonies = { split: 30, triad: 60, analogous: 150 };
 let harmony = "triad";
 
 function setHue(hue) {
-  let hueLeft, hueRight;
-  hueLeft =
-    hue < 180 + harmonies[harmony]
-      ? hue + (180 - harmonies[harmony])
-      : hue - (180 + harmonies[harmony]);
-  hueRight =
-    hue > 180 - harmonies[harmony]
-      ? hue - (180 - harmonies[harmony])
-      : hue + (180 + harmonies[harmony]);
+  const hueB =
+      hue < 180 + harmonies[harmony]
+        ? hue + (180 - harmonies[harmony])
+        : hue - (180 + harmonies[harmony]),
+    hueC =
+      hue > 180 - harmonies[harmony]
+        ? hue - (180 - harmonies[harmony])
+        : hue + (180 + harmonies[harmony]);
 
-  return [hueLeft, hueRight];
+  return [hueB, hueC];
 }
 
 const hueText = document.getElementById("hue"),
@@ -41,59 +40,73 @@ function setHslText(hue, saturation, lightness) {
   lightText.textContent = lightness + "%";
 }
 
-const blocks = document.querySelectorAll(".block");
+const elementA = document.getElementsByClassName("colour--a");
+const elementB = document.getElementsByClassName("colour--b");
+const elementC = document.getElementsByClassName("colour--c");
+
+const hueGradient = document.querySelector(".hue-gradient");
+const lightGradient = document.querySelector(".light-gradient");
 
 let xToHue = 0,
   saturation = 60,
-  yToLight = 0;
+  yToLight = 0,
+  hsls;
 
-blocks.forEach((block, index) => {
-  const left = index > 0 ? index - 1 : 2;
-  const right = index < 2 ? index + 1 : 0;
+function updateColour() {
+  const [hueB, hueC] = setHue(xToHue);
 
-  window.addEventListener("mousemove", (event) => {
-    xToHue = Math.floor((event.clientX / width) * 120);
-    yToLight = Math.floor((event.clientY / height) * 100);
-
-    const [hueLeft, hueRight] = setHue(xToHue);
-
-    hslLeft = `hsl(${hueLeft}, ${saturation}%, ${yToLight}%)`;
-    hsl = `hsl(${xToHue}, ${saturation}%, ${yToLight}%)`;
-    hslRight = `hsl(${hueRight}, ${saturation}%, ${yToLight}%)`;
-
-    blocks[left].style.background = hslLeft;
-    block.style.background = hsl;
-    blocks[right].style.background = hslRight;
-
-    hsls = `body {
-  --a: ${hsl};
-  --b: ${hslLeft};
-  --c: ${hslRight};
+  hslA = `hsl(${xToHue}, ${saturation}%, ${yToLight}%)`;
+  hslB = `hsl(${hueB}, ${saturation}%, ${yToLight}%)`;
+  hslC = `hsl(${hueC}, ${saturation}%, ${yToLight}%)`;
+  hsls = `body {
+  --a: ${hslA};
+  --b: ${hslB};
+  --c: ${hslC};
 }`;
+
+  Array.from(elementA).forEach((element) => {
+    element.style.background = hslA;
   });
+  Array.from(elementB).forEach((element) => {
+    element.style.background = hslB;
+  });
+  Array.from(elementC).forEach((element) => {
+    element.style.background = hslC;
+  });
+  hueGradient.style.background = `linear-gradient(
+    90deg,
+    hsl(0, ${saturation}%, ${yToLight}%) 0%,
+    hsl(36, ${saturation}%, ${yToLight}%) 10%,
+    hsl(72, ${saturation}%, ${yToLight}%) 20%,
+    hsl(108, ${saturation}%, ${yToLight}%) 30%,
+    hsl(144, ${saturation}%, ${yToLight}%) 40%,
+    hsl(180, ${saturation}%, ${yToLight}%) 50%,
+    hsl(216, ${saturation}%, ${yToLight}%) 60%,
+    hsl(252, ${saturation}%, ${yToLight}%) 70%,
+    hsl(288, ${saturation}%, ${yToLight}%) 80%,
+    hsl(324, ${saturation}%, ${yToLight}%) 90%,
+    hsl(360, ${saturation}%, ${yToLight}%) 100%
+  )`;
+  lightGradient.style.background = `linear-gradient(
+    0deg, 
+    hsl(${xToHue}, ${saturation}%, 100%) 0%, 
+    hsl(${xToHue}, ${saturation}%, 50%) 50%, 
+    hsl(${xToHue}, ${saturation}%, 0%) 100%)`;
+  setHslText(xToHue, saturation, yToLight);
+}
+
+window.addEventListener("mousemove", (event) => {
+  xToHue = Math.floor((event.clientX / width) * 120);
+  yToLight = Math.floor((event.clientY / height) * 100);
+  updateColour();
+  const tooLight = yToLight > 52;
+  document.querySelector(".hsl-text--hue").style.color = tooLight
+    ? "black"
+    : "white";
 });
 
 const labels = document.querySelectorAll("label");
 const pageText = document.getElementsByClassName("page-text");
-const rules = document.querySelector(".rules");
-
-const text = [...labels, ...pageText, rules];
-
-const article = document.querySelector("article");
-
-window.addEventListener("mousemove", (event) => {
-  setHslText(xToHue, saturation, yToLight);
-  const darkBg = event.clientY / height < 0.57;
-  text.forEach((element) => {
-    element.style.color = darkBg ? "white" : "black";
-  });
-  article.style.backgroundColor = darkBg ? "white" : "black";
-  article.style.color = darkBg ? "black" : "white";
-});
-
-rules.addEventListener("click", (event) => {
-  article.style.opacity = "1";
-});
 
 const copied = document.querySelector(".copied");
 
@@ -105,10 +118,16 @@ function setSat(key) {
   satText.textContent = saturation + "%";
 }
 
+const keys = ["ArrowUp", "ArrowDown"];
+const keyArrows = document.querySelectorAll(".keys");
+
 window.addEventListener("keydown", (event) => {
-  const changeSat = event.key === "ArrowUp" || event.key === "ArrowDown";
+  const changeSat = keys.includes(event.key);
   if (changeSat) {
     setSat(event.key);
+    updateColour();
+    keyArrows[keys.indexOf(event.key)].style.background = "black";
+    keyArrows[keys.indexOf(event.key)].style.color = "hsl(0, 0%, 90%)";
   }
 
   if (event.key === "Enter") {
@@ -122,5 +141,13 @@ window.addEventListener("keydown", (event) => {
     cssVars.select();
     document.execCommand("copy");
     document.body.removeChild(cssVars);
+  }
+});
+
+window.addEventListener("keyup", (event) => {
+  const changeSat = keys.includes(event.key);
+  if (changeSat) {
+    keyArrows[keys.indexOf(event.key)].style.background = "hsl(0, 0%, 90%)";
+    keyArrows[keys.indexOf(event.key)].style.color = "black";
   }
 });

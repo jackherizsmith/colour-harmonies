@@ -1,50 +1,110 @@
 * {
   padding: 0;
   margin: 0;
+}
+
+body {
+  height: 100vh;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-.container {
+.hue-gradient {
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  height: 2rem;
   display: flex;
-  height: 100vh;
+  align-items: center;
+  padding-left: 0.5rem;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    hsl(0, 100%, 50%) 0%,
+    hsl(36, 100%, 50%) 10%,
+    hsl(72, 100%, 50%) 20%,
+    hsl(108, 100%, 50%) 30%,
+    hsl(144, 100%, 50%) 40%,
+    hsl(180, 100%, 50%) 50%,
+    hsl(216, 100%, 50%) 60%,
+    hsl(252, 100%, 50%) 70%,
+    hsl(288, 100%, 50%) 80%,
+    hsl(324, 100%, 50%) 90%,
+    hsl(360, 100%, 50%) 100%
+  );
 }
 
-.block {
-  flex: 1 1 0;
+.light-gradient {
+  position: fixed;
+  z-index: 5;
+  top: 2rem;
+  bottom: 0;
+  right: 0;
+  width: 2rem;
+  padding-top: 1rem;
+  background: linear-gradient(0deg, hsl(0, 0%, 100%) 0%, hsl(0, 0%, 0%) 100%);
+}
+
+.hsl-text {
+  color: white;
+}
+.hsl-text--hue {
+  transition: color 0.3s;
+}
+
+.hsl-text--light {
+  transform: rotate(90deg);
+  white-space: nowrap;
+}
+
+.back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.box-1 {
+  position: absolute;
+  top: 20vh;
+  width: 20vh;
+  bottom: 60vh;
+  left: 20vw;
+}
+
+.box-2 {
+  position: absolute;
+  top: 50vh;
+  width: 20vh;
+  bottom: 30vh;
+  left: 20vw;
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: hsl(0, 0%, 96%);
+}
+
+.controls > p {
+  margin: 0.5rem 0;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 2rem;
 }
 
-label,
-p {
-  font-size: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 2rem 0 0;
-  transition: color 0.2s;
+label {
+  margin-left: 1rem;
 }
 
 input {
-  opacity: 0.3;
+  margin-right: 0.5rem;
 }
 
-label input:checked {
-  background-color: red;
-}
-
-.rules {
-  position: fixed;
-  font-size: 1.5rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  transition: color 0.2s;
+.keys {
+  border: 1px solid black;
+  padding: 0 0.25rem;
 }
 
 .copied {
@@ -58,23 +118,4 @@ label input:checked {
   right: 0;
   top: 7rem;
   transition: opacity 0.5s;
-}
-
-article {
-  position: fixed;
-  opacity: 1;
-  background-color: black;
-  color: white;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: color 0.1s, background-color 0.2s;
-}
-
-article > p {
-  margin: 1em 0;
-  text-align: center;
-  font-size: 1.25rem;
 }
