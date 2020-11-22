@@ -14,7 +14,6 @@ let height = colorBox.offsetHeight,
 window.addEventListener("resize", () => {
   height = colorBox.offsetHeight;
   width = colorBox.offsetWidth;
-  console.log(height, width);
 });
 
 const harmonies = { split: 30, triad: 60, analogous: 150 };
