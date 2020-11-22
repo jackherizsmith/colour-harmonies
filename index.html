@@ -7,48 +7,67 @@
     <title>Colours</title>
   </head>
   <body>
-    <div class="hue-gradient">
-      <p class="hsl-text hsl-text--hue">Hue <span id="hue">0</span></p>
+    <div class="grid">
+      <section class="colour-box">
+        <div class="hue-gradient">
+          <p class="hsl-text text-on-main">Hue <span id="hue">0</span></p>
+        </div>
+        <div class="light-gradient">
+          <p class="hsl-text hsl-text--light">
+            Lightness <span id="light">0%</span>
+          </p>
+        </div>
+        <div class="box colour--main">
+          <div class="box--1 colour--dark"></div>
+          <div class="box--2 colour--light"></div>
+          <div class="copied">Copied!</div>
+        </div>
+      </section>
+      <section class="controls">
+        <label for="analogous"
+          ><input
+            type="radio"
+            name="harmony"
+            value="analogous"
+            id="analogous"
+          /><span>Analogous</span>
+        </label>
+        <label for="triad"
+          ><input
+            type="radio"
+            name="harmony"
+            value="triad"
+            id="triad"
+            checked
+          />Triad
+        </label>
+        <label for="split">
+          <input
+            type="radio"
+            name="harmony"
+            value="split"
+            id="split"
+          />Split-complementary
+        </label>
+        <p>
+          Use <span class="keys">A</span> & <span class="keys">Z</span> on the
+          keyboard to change saturation:
+          <span id="sat">60%</span>
+        </p>
+        <p>Press enter to copy CSS variable to your clipboard</p>
+      </section>
+      <section class="examples">
+        <nav class="colour--main">
+          <input type="text" name="search" id="search" placeholder="Search" />
+          <ul class="text-on-main">
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact</li>
+          </ul>
+        </nav>
+        <div class="nav--bottom colour--dark"></div>
+      </section>
     </div>
-    <div class="light-gradient">
-      <p class="hsl-text hsl-text--light">
-        Lightness <span id="light">0%</span>
-      </p>
-    </div>
-    <div class="container">
-      <div class="back colour--a" id="left"></div>
-      <div class="box-1 colour--b" id="centre"></div>
-      <div class="box-2 colour--c" id="right"></div>
-    </div>
-    <div class="controls">
-      <label for="analogous"
-        ><input
-          type="radio"
-          name="harmony"
-          value="analogous"
-          id="analogous"
-        /><span>Analogous
-      </label>
-      <label for="triad"
-        ><input
-          type="radio"
-          name="harmony"
-          value="triad"
-          id="triad"
-          checked
-        />Triad
-      </label>
-      <label for="split">
-        <input type="radio" name="harmony" value="split" id="split" />Split-complementary
-      </label>
-      <p>
-        Use <span class="keys">&uarr;</span> &
-        <span class="keys">&darr;</span> on the keyboard to change saturation:
-        <span id="sat">60%</span>
-      </p>
-      <p>Press enter to copy CSS variable to your clipboard</p>
-    </div>
-    <div class="copied">Copied!</div>
   </body>
   <script src="index.js"></script>
 </html>
