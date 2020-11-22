@@ -4,20 +4,13 @@
 }
 
 body {
-  height: 100vh;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .hue-gradient {
-  position: fixed;
-  z-index: 5;
-  top: 0;
-  left: 0;
-  height: 2rem;
   display: flex;
+  padding-left: 0.25rem;
   align-items: center;
-  padding-left: 0.5rem;
-  right: 0;
   background: linear-gradient(
     90deg,
     hsl(0, 100%, 50%) 0%,
@@ -32,66 +25,127 @@ body {
     hsl(324, 100%, 50%) 90%,
     hsl(360, 100%, 50%) 100%
   );
+  grid-area: hue;
+}
+
+.grid {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 40vw auto;
+  grid-template-rows: auto min-content;
+  grid-template-areas:
+    "color-box examples"
+    "controls controls";
+}
+
+.colour-box {
+  grid-area: color-box;
+  display: grid;
+  grid-template-columns: 2rem auto 2rem;
+  grid-template-rows: 2rem auto;
+  grid-template-areas:
+    "hue hue hue"
+    "sat colour light";
+}
+
+.examples {
+  grid-area: examples;
+  border: solid 1px black;
+}
+
+.controls {
+  grid-area: controls;
 }
 
 .light-gradient {
-  position: fixed;
-  z-index: 5;
-  top: 2rem;
-  bottom: 0;
-  right: 0;
-  width: 2rem;
-  padding-top: 1rem;
+  grid-area: light;
   background: linear-gradient(0deg, hsl(0, 0%, 100%) 0%, hsl(0, 0%, 0%) 100%);
+  padding-top: 1rem;
 }
 
-.hsl-text {
+.hsl-text--white {
   color: white;
 }
-.hsl-text--hue {
+
+.sat-gradient {
+  grid-area: sat;
+  background: hsl(0, 0%, 100%);
+  padding-top: 1rem;
+  color: black;
+}
+
+.text-on-main {
   transition: color 0.3s;
 }
 
-.hsl-text--light {
+.hsl-text--light,
+.hsl-text--sat {
   transform: rotate(90deg);
   white-space: nowrap;
 }
 
-.back {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
+.box {
+  grid-area: colour;
+  display: grid;
+  grid-template-columns: 1fr 10rem 1.5fr;
+  grid-template-rows: 1fr 10rem 1fr 10rem 1fr;
+  grid-template-areas:
+    ". . ."
+    ". one ."
+    "copied copied copied"
+    ". two ."
+    ". . .";
+}
+
+.box--1 {
+  grid-area: one;
+}
+
+.box--2 {
+  grid-area: two;
+}
+
+.copied {
+  grid-area: copied;
+  opacity: 0;
+  background-color: aliceblue;
+  align-self: center;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  text-align: center;
   left: 0;
+  right: 0;
+  top: 5rem;
+  transition: opacity 0.5s;
 }
 
-.box-1 {
-  position: absolute;
-  top: 20vh;
-  width: 20vh;
-  bottom: 60vh;
-  left: 20vw;
+nav {
+  display: flex;
+  padding: 1rem;
 }
 
-.box-2 {
-  position: absolute;
-  top: 50vh;
-  width: 20vh;
-  bottom: 30vh;
-  left: 20vw;
+nav > input {
+  padding: 0.5rem;
+}
+
+ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.nav--bottom {
+  display: block;
+  width: 100%;
+  height: 0.25rem;
 }
 
 .controls {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
+  grid-area: controls;
   background-color: hsl(0, 0%, 96%);
-}
-
-.controls > p {
-  margin: 0.5rem 0;
-  text-align: center;
+  padding: 2rem;
 }
 
 label {
@@ -105,17 +159,4 @@ input {
 .keys {
   border: 1px solid black;
   padding: 0 0.25rem;
-}
-
-.copied {
-  position: fixed;
-  opacity: 0;
-  background-color: aliceblue;
-  font-size: 1.5rem;
-  padding: 0.5rem 0;
-  text-align: center;
-  left: 0;
-  right: 0;
-  top: 5rem;
-  transition: opacity 0.5s;
 }
