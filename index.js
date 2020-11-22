@@ -102,6 +102,7 @@ function updateColour() {
       hsl(${xToHue}, 0%, ${yToLight}%) 0%, 
       hsl(${xToHue}, 50%, ${yToLight}%) 50%, 
       hsl(${xToHue}, 100%, ${yToLight}%) 100%)`;
+    console.log(satGradient);
     lightGradient.style.background = `linear-gradient(
         0deg, 
         hsl(${xToHue}, ${saturation}%, 100%) 0%, 
