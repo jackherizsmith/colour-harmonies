@@ -54,33 +54,38 @@ let xToHue = 0,
   saturation = 60,
   yToLight = 0,
   hsls,
-  updating = true;
+  updating = true,
+  accentIsB = true;
 
 function updateColour() {
   if (updating) {
     const [hueB, hueC] = setHue(xToHue);
 
     hslA = `hsl(${xToHue}, ${saturation}%, ${yToLight}%)`;
-    hslB = `hsl(${hueB}, ${saturation}%, ${100 - yToLight}%)`;
-    hslC = `hsl(${hueC}, ${saturation}%, ${yToLight}%)`;
+    hslB = `hsl(${hueB}, ${saturation}%, ${
+      accentIsB ? 100 - yToLight : yToLight
+    }%)`;
+    hslC = `hsl(${hueC}, ${saturation}%, ${
+      accentIsB ? yToLight : 100 - yToLight
+    }%)`;
     hsls = `body {
-    --main: ${hslA};
-    --accent: ${hslB};
-    --complement: ${hslC};
-  }
+  --main: ${hslA};
+  --accent: ${accentIsB ? hslB : hslC};
+  --complement: ${accentIsB ? hslC : hslB};
+}
   
-  .colour--main {background-colour: var(--main)}
-  .colour--accent {background-colour: var(--accent)}
-  .colour--complement {background-colour: var(--complement)}`;
+.colour--main {background-colour: var(--main)}
+.colour--accent {background-colour: var(--accent)
+.colour--complement {background-colour: var(--complement)}`;
 
     Array.from(elementA).forEach((element) => {
       element.style.background = hslA;
     });
     Array.from(elementB).forEach((element) => {
-      element.style.background = hslB;
+      element.style.background = accentIsB ? hslB : hslC;
     });
     Array.from(elementC).forEach((element) => {
-      element.style.background = hslC;
+      element.style.background = accentIsB ? hslC : hslB;
     });
     hueGradient.style.background = `linear-gradient(
       90deg,
@@ -127,11 +132,13 @@ colorBox.addEventListener("mousemove", (event) => {
 colorBox.addEventListener("wheel", setSat);
 
 function setSat(event) {
-  saturation = isScrollingUp(event)
-    ? Math.max(saturation - 1, 0)
-    : Math.min(saturation + 1, 100);
-  satText.textContent = saturation + "%";
-  updateColour();
+  if (updating) {
+    saturation = isScrollingUp(event)
+      ? Math.max(saturation - 1, 0)
+      : Math.min(saturation + 1, 100);
+    satText.textContent = saturation + "%";
+    updateColour();
+  }
 }
 
 function isScrollingUp(event) {
@@ -140,6 +147,11 @@ function isScrollingUp(event) {
   }
   return event.deltaY < 0;
 }
+
+colorBox.addEventListener("click", (event) => {
+  accentIsB = !accentIsB;
+  updateColour();
+});
 
 const labels = document.querySelectorAll("label");
 const pageText = document.getElementsByClassName("page-text");
