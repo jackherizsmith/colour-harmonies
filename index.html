@@ -10,10 +10,15 @@
     <div class="grid">
       <section class="colour-box">
         <div class="hue-gradient">
-          <p class="hsl-text text-on-main">Hue <span id="hue">0</span></p>
+          <p class="text-on-main">Hue <span id="hue">0</span></p>
+        </div>
+        <div class="sat-gradient">
+          <p class="hsl-text--sat text-on-main">
+            Saturation <span id="sat">0%</span>
+          </p>
         </div>
         <div class="light-gradient">
-          <p class="hsl-text hsl-text--light">
+          <p class="hsl-text--white hsl-text--light">
             Lightness <span id="light">0%</span>
           </p>
         </div>
@@ -49,11 +54,7 @@
             id="split"
           />Split-complementary
         </label>
-        <p>
-          Use <span class="keys">A</span> & <span class="keys">Z</span> on the
-          keyboard to change saturation:
-          <span id="sat">60%</span>
-        </p>
+        <p></p>
         <p>Press enter to copy CSS variable to your clipboard</p>
       </section>
       <section class="examples">

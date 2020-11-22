@@ -48,6 +48,7 @@ const elementB = document.getElementsByClassName("colour--dark");
 const elementC = document.getElementsByClassName("colour--light");
 
 const hueGradient = document.querySelector(".hue-gradient");
+const satGradient = document.querySelector(".sat-gradient");
 const lightGradient = document.querySelector(".light-gradient");
 
 let xToHue = 0,
@@ -92,11 +93,16 @@ function updateColour() {
       hsl(324, ${saturation}%, ${yToLight}%) 90%,
       hsl(360, ${saturation}%, ${yToLight}%) 100%
     )`;
-    lightGradient.style.background = `linear-gradient(
+    satGradient.style.background = `linear-gradient(
       0deg, 
-      hsl(${xToHue}, ${saturation}%, 100%) 0%, 
-      hsl(${xToHue}, ${saturation}%, 50%) 50%, 
-      hsl(${xToHue}, ${saturation}%, 0%) 100%)`;
+      hsl(${xToHue}, 0%, ${yToLight}%) 0%, 
+      hsl(${xToHue}, 50%, ${yToLight}%) 50%, 
+      hsl(${xToHue}, 100%, ${yToLight}%) 100%)`;
+    lightGradient.style.background = `linear-gradient(
+        0deg, 
+        hsl(${xToHue}, ${saturation}%, 100%) 0%, 
+        hsl(${xToHue}, ${saturation}%, 50%) 50%, 
+        hsl(${xToHue}, ${saturation}%, 0%) 100%)`;
     setHslText(xToHue, saturation, yToLight);
   }
 }
@@ -108,36 +114,36 @@ colorBox.addEventListener("mousemove", (event) => {
     xToHue = Math.round((event.clientX / width) * 360);
     yToLight = Math.round((event.clientY / height) * 100);
     updateColour();
-    const tooLight = yToLight > 58;
+    const tooLight = yToLight > 45;
     textOnMain.forEach(
       (element) => (element.style.color = tooLight ? "black" : "white")
     );
   }
 });
 
+colorBox.addEventListener("wheel", setSat);
+
+function setSat(event) {
+  saturation = checkDirection(event)
+    ? Math.max(saturation - 1, 0)
+    : Math.min(saturation + 1, 100);
+  satText.textContent = saturation + "%";
+  updateColour();
+}
+
+function checkDirection(event) {
+  if (event.wheelDelta) {
+    return event.wheelDelta > 0;
+  }
+  return event.deltaY < 0;
+}
+
 const labels = document.querySelectorAll("label");
 const pageText = document.getElementsByClassName("page-text");
 
 const copied = document.querySelector(".copied");
 
-function setSat(key) {
-  saturation =
-    key === "a" ? Math.min(saturation + 1, 100) : Math.max(saturation - 1, 0);
-  satText.textContent = saturation + "%";
-}
-
-const keys = ["a", "z"];
-const keyArrows = document.querySelectorAll(".keys");
-
 window.addEventListener("keydown", (event) => {
-  const changeSat = keys.includes(event.key);
-  if (changeSat) {
-    setSat(event.key);
-    updateColour();
-    keyArrows[keys.indexOf(event.key)].style.background = "black";
-    keyArrows[keys.indexOf(event.key)].style.color = "hsl(0, 0%, 90%)";
-  }
-
   if (event.key === "Enter") {
     copied.style.opacity = ".75";
     setTimeout(() => {
@@ -153,13 +159,5 @@ window.addEventListener("keydown", (event) => {
 
   if (event.key === " ") {
     updating = !updating;
-  }
-});
-
-window.addEventListener("keyup", (event) => {
-  const changeSat = keys.includes(event.key);
-  if (changeSat) {
-    keyArrows[keys.indexOf(event.key)].style.background = "hsl(0, 0%, 90%)";
-    keyArrows[keys.indexOf(event.key)].style.color = "black";
   }
 });

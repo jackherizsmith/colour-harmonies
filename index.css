@@ -41,11 +41,11 @@ body {
 .colour-box {
   grid-area: color-box;
   display: grid;
-  grid-template-columns: auto 2rem;
+  grid-template-columns: 2rem auto 2rem;
   grid-template-rows: 2rem auto;
   grid-template-areas:
-    "hue hue"
-    "colour light";
+    "hue hue hue"
+    "sat colour light";
 }
 
 .examples {
@@ -63,14 +63,23 @@ body {
   padding-top: 1rem;
 }
 
-.hsl-text {
+.hsl-text--white {
   color: white;
 }
+
+.sat-gradient {
+  grid-area: sat;
+  background: hsl(0, 0%, 100%);
+  padding-top: 1rem;
+  color: black;
+}
+
 .text-on-main {
   transition: color 0.3s;
 }
 
-.hsl-text--light {
+.hsl-text--light,
+.hsl-text--sat {
   transform: rotate(90deg);
   white-space: nowrap;
 }
