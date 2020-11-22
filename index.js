@@ -65,10 +65,14 @@ function updateColour() {
     hslB = `hsl(${hueB}, ${saturation}%, ${100 - yToLight}%)`;
     hslC = `hsl(${hueC}, ${saturation}%, ${yToLight}%)`;
     hsls = `body {
-    --a: ${hslA};
-    --b: ${hslB};
-    --c: ${hslC};
-  }`;
+    --main: ${hslA};
+    --accent: ${hslB};
+    --complement: ${hslC};
+  }
+  
+  .colour--main {background-colour: var(--main)}
+  .colour--accent {background-colour: var(--accent)}
+  .colour--complement {background-colour: var(--complement)}`;
 
     Array.from(elementA).forEach((element) => {
       element.style.background = hslA;
@@ -114,7 +118,7 @@ colorBox.addEventListener("mousemove", (event) => {
     xToHue = Math.round((event.clientX / width) * 360);
     yToLight = Math.round((event.clientY / height) * 100);
     updateColour();
-    const tooLight = yToLight > 45;
+    const tooLight = yToLight > 47;
     textOnMain.forEach(
       (element) => (element.style.color = tooLight ? "black" : "white")
     );
@@ -124,14 +128,14 @@ colorBox.addEventListener("mousemove", (event) => {
 colorBox.addEventListener("wheel", setSat);
 
 function setSat(event) {
-  saturation = checkDirection(event)
+  saturation = isScrollingUp(event)
     ? Math.max(saturation - 1, 0)
     : Math.min(saturation + 1, 100);
   satText.textContent = saturation + "%";
   updateColour();
 }
 
-function checkDirection(event) {
+function isScrollingUp(event) {
   if (event.wheelDelta) {
     return event.wheelDelta > 0;
   }
