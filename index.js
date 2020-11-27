@@ -42,9 +42,9 @@ function setHslText(hue, saturation, lightness) {
   lightText.textContent = lightness + "%";
 }
 
-const elementA = document.getElementsByClassName("colour--main");
-const elementB = document.getElementsByClassName("colour--dark");
-const elementC = document.getElementsByClassName("colour--light");
+const colourMain = document.getElementsByClassName("colour--main");
+const colourAccent = document.getElementsByClassName("colour--accent");
+const colourComplement = document.getElementsByClassName("colour--complement");
 
 const hueGradient = document.querySelector(".hue-gradient");
 const satGradient = document.querySelector(".sat-gradient");
@@ -62,12 +62,8 @@ function updateColour() {
     const [hueB, hueC] = setHue(xToHue);
 
     hslA = `hsl(${xToHue}, ${saturation}%, ${yToLight}%)`;
-    hslB = `hsl(${hueB}, ${saturation}%, ${
-      accentIsB ? 100 - yToLight : yToLight
-    }%)`;
-    hslC = `hsl(${hueC}, ${saturation}%, ${
-      accentIsB ? yToLight : 100 - yToLight
-    }%)`;
+    hslB = `hsl(${hueB}, ${saturation}%, ${accentIsB ? 100 - yToLight : 50}%)`;
+    hslC = `hsl(${hueC}, ${saturation}%, ${accentIsB ? 50 : 100 - yToLight}%)`;
     hsls = `body {
   --main: ${hslA};
   --accent: ${accentIsB ? hslB : hslC};
@@ -78,13 +74,13 @@ function updateColour() {
 .colour--accent {background-colour: var(--accent)
 .colour--complement {background-colour: var(--complement)}`;
 
-    Array.from(elementA).forEach((element) => {
+    Array.from(colourMain).forEach((element) => {
       element.style.background = hslA;
     });
-    Array.from(elementB).forEach((element) => {
+    Array.from(colourAccent).forEach((element) => {
       element.style.background = accentIsB ? hslB : hslC;
     });
-    Array.from(elementC).forEach((element) => {
+    Array.from(colourComplement).forEach((element) => {
       element.style.background = accentIsB ? hslC : hslB;
     });
     hueGradient.style.background = `linear-gradient(
